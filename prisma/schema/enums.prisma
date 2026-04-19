@@ -1,0 +1,13 @@
+enum Role{
+    USER
+    ADMIN
+}
+enum Status{
+    OPEN
+    CLOSED
+    CANCELLED
+}
+enum Category{
+    WANT
+    NEED
+}

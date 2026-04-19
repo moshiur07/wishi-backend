@@ -1,0 +1,14 @@
+model Payment {
+    id String @id @default(cuid())
+    orderId String
+    paymentId String
+    bkash    String? @db.VarChar(20)          
+    nagad    String? @db.VarChar(20)          
+    bankInfo String? @db.VarChar(500)        
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@index([userId])
+    @@map("payment")
+}

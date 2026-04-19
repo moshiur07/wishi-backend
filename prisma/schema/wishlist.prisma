@@ -1,0 +1,25 @@
+model WishItem {
+  id            String         @id @default(cuid())
+  title         String         @db.VarChar(80)
+  description   String?        @db.VarChar(300)
+  imageUrl      String?
+  price         Float
+  category      Category       @default(WANT)
+  status        Status         @default(OPEN)
+  productUrl    String?
+  isPinned      Boolean        @default(false)
+  occasion      Occasion?      @relation(fields: [occasionId], references: [id], onDelete: Cascade)
+  occasionId    String?
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  contributions Contribution[] @relation("ContributionWishItem")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([occasionId])
+  @@index([category])
+  @@index([status])
+  @@index([createdAt])
+  @@map("wish_items")
+}
