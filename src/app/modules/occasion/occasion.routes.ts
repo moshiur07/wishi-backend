@@ -3,32 +3,39 @@ import { OccasionController } from "./occasion.controller";
 import validateRequest from "../../middleware/validateRequest";
 import { OccasionValidation } from "./occasion.validation";
 import { auth } from "../../middleware/auth";
+import { Role } from "../../../generated/prisma/enums";
 
 const router = Router();
 
 router.post(
     "/",
-    auth(),
+    auth(Role.USER),
     validateRequest(OccasionValidation.createOccasionSchema),
     OccasionController.createOccasion
 );
 
 router.get(
     "/",
-    auth(),
+    auth(Role.USER),
     OccasionController.getMyOccasions
+);
+
+router.get(
+    "/:id",
+    auth(Role.USER),
+    OccasionController.getOccasionById
 );
 
 router.patch(
     "/:id",
-    auth(),
+    auth(Role.USER),
     validateRequest(OccasionValidation.updateOccasionSchema),
     OccasionController.updateOccasion
 );
 
 router.delete(
     "/:id",
-    auth(),
+    auth(Role.USER),
     OccasionController.deleteOccasion
 );
 

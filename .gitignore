@@ -3,5 +3,6 @@ node_modules
 .env
 
 dist
+assets
 
 **/generated/prisma

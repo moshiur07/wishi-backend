@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { OccasionServices } from "./occasion.services";
 import status from "http-status";
+import pick from "../../utils/pick";
 
 const createOccasion = catchAsync(async (req: Request, res: Response) => {
     const userId = req.user?.id;
@@ -18,12 +19,26 @@ const createOccasion = catchAsync(async (req: Request, res: Response) => {
 
 const getMyOccasions = catchAsync(async (req: Request, res: Response) => {
     const userId = req.user?.id;
-    const result = await OccasionServices.getMyOccasions(userId as string);
+    const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+    const result = await OccasionServices.getMyOccasions(userId as string, options);
 
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
         message: "Occasions fetched successfully",
+        data: result,
+    });
+});
+
+const getOccasionById = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const userId = req.user?.id;
+    const result = await OccasionServices.getOccasionById(id as string, userId as string);
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Occasion fetched successfully",
         data: result,
     });
 });
@@ -57,6 +72,7 @@ const deleteOccasion = catchAsync(async (req: Request, res: Response) => {
 export const OccasionController = {
     createOccasion,
     getMyOccasions,
+    getOccasionById,
     updateOccasion,
     deleteOccasion,
 };

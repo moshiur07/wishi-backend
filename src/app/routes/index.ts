@@ -3,6 +3,7 @@ import { WishlistRoutes } from "../modules/wishlist/wishlist.routes";
 import { UserRoutes } from "../modules/user/user.routes";
 import { OccasionRoutes } from "../modules/occasion/occasion.routes";
 import { ContributionRoutes } from "../modules/contribution/contribution.routes";
+import { AIRoutes } from "../modules/ai/ai.routes";
 
 const router = Router();
 
@@ -26,6 +27,10 @@ const moduleRoutes = [
     {
         path: "/contributions",
         route: ContributionRoutes,
+    },
+    {
+        path: "/ai",
+        route: AIRoutes,
     },
 ];
 

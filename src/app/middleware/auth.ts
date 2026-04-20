@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from "express";
 import AppError from "../../helper/AppError";
 import status from "http-status";
@@ -21,7 +22,7 @@ export const auth = (...requiredRoles: string[]) => {
         }
 
         // Add user to request object
-        req.user = user as any;
+        (req as any).user = user as any;
 
         next();
     });

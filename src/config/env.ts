@@ -14,6 +14,10 @@ interface EnvConfig {
     FACEBOOK_CLIENT_SECRET: string;
     BETTER_AUTH_URL: string;
     BETTER_AUTH_SECRET: string;
+    ADMIN_EMAIL: string;
+    ADMIN_PASSWORD: string;
+    ADMIN_USERNAME: string;
+    CORS_ORIGIN: string;
 }
 
 const loadEnvVars = (): EnvConfig => {
@@ -27,6 +31,10 @@ const loadEnvVars = (): EnvConfig => {
         "FACEBOOK_CLIENT_SECRET",
         "BETTER_AUTH_URL",
         "BETTER_AUTH_SECRET",
+        "ADMIN_EMAIL",
+        "ADMIN_PASSWORD",
+        "ADMIN_USERNAME",
+        "CORS_ORIGIN",
     ];
     requireVars.forEach((varName) => {
         if (!process.env[varName]) {
@@ -46,6 +54,10 @@ const loadEnvVars = (): EnvConfig => {
         FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET as string,
         BETTER_AUTH_URL: process.env.BETTER_AUTH_URL as string,
         BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET as string,
+        ADMIN_EMAIL: process.env.ADMIN_EMAIL as string,
+        ADMIN_PASSWORD: process.env.ADMIN_PASSWORD as string,
+        ADMIN_USERNAME: process.env.ADMIN_USERNAME as string,
+        CORS_ORIGIN: process.env.CORS_ORIGIN || "*",
     };
 };
 

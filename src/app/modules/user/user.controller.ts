@@ -40,8 +40,21 @@ const getPublicProfile = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getDashboardStats = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    const result = await UserServices.getDashboardStats(userId as string);
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Dashboard stats fetched successfully",
+        data: result,
+    });
+});
+
 export const UserController = {
     getMyProfile,
     updateProfile,
     getPublicProfile,
+    getDashboardStats
 };

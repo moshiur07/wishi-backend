@@ -1,6 +1,8 @@
+/* eslint-disable no-useless-assignment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "../../lib/prisma";
 import { User } from "../../../generated/prisma/client";
-// import AppError from "../../helper/AppError";
 import status from "http-status";
 import AppError from "../../../helper/AppError";
 
@@ -17,7 +19,6 @@ const getMyProfile = async (userId: string) => {
 };
 
 const updateProfile = async (userId: string, payload: any) => {
-    // If updating username, check for uniqueness
     if (payload.username) {
         const existingUser = await prisma.user.findFirst({
             where: {
@@ -56,11 +57,48 @@ const getPublicProfile = async (username: string) => {
 
     if (!user) throw new AppError(status.NOT_FOUND, "User profile not found");
 
-    return user;
+    // Get some basic stats for the public profile
+    const wishItemsCount = await prisma.wishItem.count({
+        where: { userId: user.id, status: "OPEN" }
+    });
+
+    return {
+        ...user,
+        stats: {
+            activeWishItems: wishItemsCount
+        }
+    };
+};
+
+const getDashboardStats = async (userId: string) => {
+    const totalWishItems = await prisma.wishItem.count({ where: { userId } });
+    const openWishItems = await prisma.wishItem.count({ where: { userId, status: "OPEN" } });
+    const contributionsReceived = await prisma.contribution.count({
+        where: { wishItem: { userId } }
+    });
+
+    const recentContributions = await prisma.contribution.findMany({
+        where: { wishItem: { userId } },
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: {
+            wishItem: {
+                select: { title: true }
+            }
+        }
+    });
+
+    return {
+        totalWishItems,
+        openWishItems,
+        contributionsReceived,
+        recentContributions
+    };
 };
 
 export const UserServices = {
     getMyProfile,
     updateProfile,
     getPublicProfile,
+    getDashboardStats
 };

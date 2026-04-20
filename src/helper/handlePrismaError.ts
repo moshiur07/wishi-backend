@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-assignment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import status from "http-status";
 import { IErrorSource, TErrorResponse } from "../interface/errorInterfaces";
 import { Prisma } from "../generated/prisma/client";

@@ -3,19 +3,20 @@ import { WishlistController } from "./wishlist.controller";
 import validateRequest from "../../middleware/validateRequest";
 import { WishlistValidation } from "./wishlist.validation";
 import { auth } from "../../middleware/auth";
+import { Role } from "../../../generated/prisma/enums";
 
 const router = Router();
 
 router.post(
     "/",
-    auth(),
+    auth(Role.USER),
     validateRequest(WishlistValidation.createWishItemSchema),
     WishlistController.createWishItem
 );
 
 router.get(
     "/",
-    auth(),
+    auth(Role.USER),
     WishlistController.getMyWishItems
 );
 
@@ -26,19 +27,26 @@ router.get(
 
 router.get(
     "/:id",
+    auth(Role.USER),
     WishlistController.getWishItemById
 );
 
 router.patch(
     "/:id",
-    auth(),
+    auth(Role.USER),
     validateRequest(WishlistValidation.updateWishItemSchema),
     WishlistController.updateWishItem
 );
 
+router.patch(
+    "/:id/toggle-pin",
+    auth(Role.USER),
+    WishlistController.togglePinStatus
+);
+
 router.delete(
     "/:id",
-    auth(),
+    auth(Role.USER),
     WishlistController.deleteWishItem
 );
 
